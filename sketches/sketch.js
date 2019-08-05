@@ -10,6 +10,19 @@ function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
 }
 
+/** I got this function from https://p5js.org/examples/form-regular-polygon.html, but I
+ *  changed the npoints variable to always be six to create a hexagon. */
+function hexagon(x, y, radius) {
+  let angle = TWO_PI / 6;
+  beginShape();
+  for (let a = 0; a < TWO_PI; a += angle) {
+    let sx = x + cos(a) * radius;
+    let sy = y + sin(a) * radius;
+    vertex(sx, sy);
+  }
+  endShape(CLOSE);
+}
+
 // VARIABLES
 
 // Constants
@@ -17,32 +30,33 @@ function getRandomArbitrary(min, max) {
 const CANVAS_WIDTH = window.innerWidth;
 const CANVAS_HEIGHT = window.innerHeight;
 
+const NUM_OF_HEXAGONS = getRandomInt(1, 10);
+
 // Non-constants
 
-let colour;
-
-let circleList = [];
-class Circle {
-  circleX = 150;
-  circleY = 150;
-  circleDiameter = 100;
-  circleRadius = this.circleDiameter / 2;
-  circleXVelocity = getRandomArbitrary(-5, 5);
-  circleYVelocity = getRandomArbitrary(-5, 5);
+let hexagonList = [];
+class Hexagon {
+  colour = getRandomInt(0, 255);
+  x = 150;
+  y = 150;
+  diameter = 100;
+  radius = this.diameter / 2;
+  xVelocity = getRandomArbitrary(-5, 5);
+  yVelocity = getRandomArbitrary(-5, 5);
 
   bounceCheck() {
-    // circle
-    if (this.circleX + this.circleRadius >= CANVAS_WIDTH)
-      this.circleXVelocity = 0 - this.circleXVelocity;
+    // hexagon
+    if (this.x + this.radius >= CANVAS_WIDTH)
+      this.xVelocity = 0 - this.xVelocity;
   
-    if (this.circleY + this.circleRadius >= CANVAS_HEIGHT)
-      this.circleYVelocity = 0 - this.circleYVelocity;
+    if (this.y + this.radius >= CANVAS_HEIGHT)
+      this.yVelocity = 0 - this.yVelocity;
   
-    if (this.circleX - this.circleRadius <= 0)
-     this.circleXVelocity = 0 - this.circleXVelocity;
+    if (this.x - this.radius <= 0)
+     this.xVelocity = 0 - this.xVelocity;
   
-    if (this.circleY - this.circleRadius <= 0)
-      this.circleYVelocity = 0 - this.circleYVelocity;
+    if (this.y - this.radius <= 0)
+      this.yVelocity = 0 - this.yVelocity;
   }
 }
 
@@ -54,8 +68,8 @@ function setup() {
 
   colour = getRandomInt(0, 256);
 
-  for (let i = 0; i <= 5; i++) { 
-    circleList.push(new Circle())
+  for (let i = 0; i <= NUM_OF_HEXAGONS; i++) { 
+    hexagonList.push(new Hexagon())
   }
 
 }
@@ -63,19 +77,21 @@ function setup() {
 function draw() {
   // colour the background black
   background(255);
-  // select white as a colour
-  fill(colour);
 
-  // loop through the 5 circles
-  for (let i = 0; i < 5; i++) { 
-    let currentCircle = circleList[i];
-    circle(currentCircle.circleX, currentCircle.circleY, currentCircle.circleDiameter);
+  // loop through the 5 hexagons
+  for (let i = 0; i < NUM_OF_HEXAGONS; i++) {
+    let currentHexagon = hexagonList[i];
 
-    // check if it's touching the walls
-    currentCircle.bounceCheck();
+    // select white as a colour
+    fill(currentHexagon.colour);
 
-    // change the circle's X position
-    currentCircle.circleX += currentCircle.circleXVelocity;
-    currentCircle.circleY += currentCircle.circleYVelocity;
+    hexagon(currentHexagon.x, currentHexagon.y, currentHexagon.diameter);
+
+    // cHeck if it's toucHing tHe walls
+    currentHexagon.bounceCheck();
+
+    // cHange tHe Hexagon's X position
+    currentHexagon.x += currentHexagon.xVelocity;
+    currentHexagon.y += currentHexagon.yVelocity;
   }
 }
