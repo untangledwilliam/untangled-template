@@ -11,16 +11,18 @@ function getRandomArbitrary(min, max) {
 }
 
 function bounceCheck() {
-  console.log(rectX);
-  console.log(rectY);
-  if (rectX + rectXSize >= CANVAS_WIDTH)
-    rectXVelocity = 0 - rectXVelocity;
-  if (rectY + rectYSize >= CANVAS_HEIGHT)
-    rectYVelocity = 0 - rectYVelocity;
-  if (rectX <= 0)
-    rectXVelocity = 0 - rectXVelocity;
-  if (rectY <= 0)
-    rectYVelocity = 0 - rectYVelocity;
+  // circle
+  if (circleX + circleRadius >= CANVAS_WIDTH)
+    circleXVelocity = 0 - circleXVelocity;
+
+  if (circleY + circleRadius >= CANVAS_HEIGHT)
+    circleYVelocity = 0 - circleYVelocity;
+
+  if (circleX - circleRadius <= 0)
+    circleXVelocity = 0 - circleXVelocity;
+
+  if (circleY - circleRadius <= 0)
+    circleYVelocity = 0 - circleYVelocity;
 }
 
 // VARIABLES
@@ -34,17 +36,12 @@ const CANVAS_HEIGHT = window.innerHeight;
 
 let colour;
 
-let circleX = 50;
-let circleY = 50;
-let circleXVelocity = 1;
-let circleYVelocity = 1;
-
-let rectX = 150;
-let rectY = 150;
-let rectXSize = 100;
-let rectYSize = 100;
-let rectXVelocity = getRandomArbitrary(-5, 5);
-let rectYVelocity = getRandomArbitrary(-5, 5);
+let circleX = 150;
+let circleY = 150;
+let circleDiameter = 100;
+let circleRadius = circleDiameter / 2;
+let circleXVelocity = getRandomArbitrary(-5, 5);
+let circleYVelocity = getRandomArbitrary(-5, 5);
 
 // SETUP AND DRAW
 
@@ -60,10 +57,8 @@ function draw() {
   background(255);
   // select white as a colour
   fill(colour);
-  // draw a rectangle
-  rect(rectX, rectY, rectXSize, rectYSize);
   // draw a circle
-  circle(circleX, circleY, 100);
+  circle(circleX, circleY, circleDiameter);
 
 
   // check if it's touching the walls
@@ -71,10 +66,5 @@ function draw() {
 
   // change the circle's X position
   circleX += circleXVelocity;
-
-  // change the rectangle's X and Y position
-  rectX += rectXVelocity;
-  rectY += rectYVelocity;
-
-
+  circleY += circleYVelocity;
 }
