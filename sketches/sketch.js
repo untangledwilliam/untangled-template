@@ -5,7 +5,7 @@ function setup() {
 
 function draw() {
   // colour the background black
-  background(0);
+  background(255);
   // select white as a colour
   fill(255);
   // draw a rectangle
