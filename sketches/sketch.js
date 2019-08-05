@@ -10,21 +10,6 @@ function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-function bounceCheck() {
-  // circle
-  if (circleX + circleRadius >= CANVAS_WIDTH)
-    circleXVelocity = 0 - circleXVelocity;
-
-  if (circleY + circleRadius >= CANVAS_HEIGHT)
-    circleYVelocity = 0 - circleYVelocity;
-
-  if (circleX - circleRadius <= 0)
-    circleXVelocity = 0 - circleXVelocity;
-
-  if (circleY - circleRadius <= 0)
-    circleYVelocity = 0 - circleYVelocity;
-}
-
 // VARIABLES
 
 // Constants
@@ -36,12 +21,30 @@ const CANVAS_HEIGHT = window.innerHeight;
 
 let colour;
 
-let circleX = 150;
-let circleY = 150;
-let circleDiameter = 100;
-let circleRadius = circleDiameter / 2;
-let circleXVelocity = getRandomArbitrary(-5, 5);
-let circleYVelocity = getRandomArbitrary(-5, 5);
+let circleList = [];
+class Circle {
+  circleX = 150;
+  circleY = 150;
+  circleDiameter = 100;
+  circleRadius = this.circleDiameter / 2;
+  circleXVelocity = getRandomArbitrary(-5, 5);
+  circleYVelocity = getRandomArbitrary(-5, 5);
+
+  bounceCheck() {
+    // circle
+    if (this.circleX + this.circleRadius >= CANVAS_WIDTH)
+      this.circleXVelocity = 0 - this.circleXVelocity;
+  
+    if (this.circleY + this.circleRadius >= CANVAS_HEIGHT)
+      this.circleYVelocity = 0 - this.circleYVelocity;
+  
+    if (this.circleX - this.circleRadius <= 0)
+     this.circleXVelocity = 0 - this.circleXVelocity;
+  
+    if (this.circleY - this.circleRadius <= 0)
+      this.circleYVelocity = 0 - this.circleYVelocity;
+  }
+}
 
 // SETUP AND DRAW
 
@@ -50,6 +53,11 @@ function setup() {
   createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 
   colour = getRandomInt(0, 256);
+
+  for (let i = 0; i <= 5; i++) { 
+    circleList.push(new Circle())
+  }
+
 }
 
 function draw() {
@@ -57,14 +65,17 @@ function draw() {
   background(255);
   // select white as a colour
   fill(colour);
-  // draw a circle
-  circle(circleX, circleY, circleDiameter);
 
+  // loop through the 5 circles
+  for (let i = 0; i < 5; i++) { 
+    let currentCircle = circleList[i];
+    circle(currentCircle.circleX, currentCircle.circleY, currentCircle.circleDiameter);
 
-  // check if it's touching the walls
-  bounceCheck();
+    // check if it's touching the walls
+    currentCircle.bounceCheck();
 
-  // change the circle's X position
-  circleX += circleXVelocity;
-  circleY += circleYVelocity;
+    // change the circle's X position
+    currentCircle.circleX += currentCircle.circleXVelocity;
+    currentCircle.circleY += currentCircle.circleYVelocity;
+  }
 }
