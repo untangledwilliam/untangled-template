@@ -6,6 +6,10 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
 function bounceCheck() {
   console.log(rectX);
   console.log(rectY);
@@ -39,8 +43,8 @@ let rectX = 150;
 let rectY = 150;
 let rectXSize = 100;
 let rectYSize = 100;
-let rectXVelocity = 2;
-let rectYVelocity = 2;
+let rectXVelocity = getRandomArbitrary(-5, 5);
+let rectYVelocity = getRandomArbitrary(-5, 5);
 
 // SETUP AND DRAW
 
